@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Aredra">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+        var div = document.querySelector('#app');
+        var viewModel = {};
+
+        //Object의 동작을 재정의하는 function
+        // Object.defineProperty(target Object, attribute, {
+        //    function content
+        // });
+
+        //즉시 실행함수 scope 관리
+        (function() {
+            function init() {
+                Object.defineProperty(viewModel, 'str', {
+                    // get : 속성 접근, set : 속성 할당
+                    get: function() {
+                        console.log('access');
+                    },
+                    set: function(newValue) {
+                        console.log('allocation', newValue);
+                        render(newValue)
+                    }
+                });
+            }
+
+            function render(value) {
+                div.innerHTML = value;
+            }
+
+            init();
+        })();
+    </script>
+</body>
+</html>
