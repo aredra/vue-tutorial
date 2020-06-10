@@ -10,9 +10,10 @@ KeywordView.setup = function(el) {
 }
 
 KeywordView.render = function(data = []) {
-    this.el.innerHTML = data.length ? this.getKeywordHtml(data) : '추천 검색어가 없습니다.';
+    this.el.innerHTML = data.length ? this.getKeywordHtml(data) : '?????';
     this.bindClickEvent();
     this.show();
+    return this;
 }
 
 KeywordView.getKeywordHtml = function(data) {

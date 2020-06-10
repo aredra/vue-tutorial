@@ -22,7 +22,7 @@ TabView.bindClicks = function () {
 
 TabView.tabsEmit = function(e) {
     this.setActiveTab(e.target.textContent);
-    this.emit("@"+e.target.id);
+    this.emit("@" + e.target.id, { selected: e.target.textContent});
 }
 
 export default TabView;
