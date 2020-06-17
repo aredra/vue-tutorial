@@ -10,6 +10,7 @@ new Vue({
     tabs: ["추천 검색어", "최근 검색어"],
     selectedTab: "",
     submited: false,
+    keywordList: []
   },
   created() {
     this.selectedTab = this.tabs[0];
@@ -27,6 +28,7 @@ new Vue({
     },
     onClickTab(tab) {
       this.selectedTab = tab;
+      this.keywordList = this.selectedTab === "추천검색어" ? KeywordModel.list() : HistoryModel.list()
     },
     search() {
       SearchModel.list().then((data) => {
