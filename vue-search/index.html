@@ -41,16 +41,30 @@
                     </li>
                 </ul>
                 <div v-if="selectedTab === tabs[0]">
-                    {{selectedTab}}
+                    <div v-if="keywordList.length">
+                        <ul class="list">
+                            <li v-for="(item, idx) in keywordList" @click="onClickKeyword(item.keyword)">
+                                <span class="number">{{idx+1}}</span>
+                                {{item.keyword}}
+                            </li>
+                        </ul>
+                    </div>
+                    <div v-else>
+                        {{selectedTab}}가 없습니다.
+                    </div>
                 </div>
                 <div v-else>
-                    {{selectedTab}}
-                </div>
-                <div>
-                    <ul class="list">
-                        <li v-for=""></li>
-                    </ul>
-                </div>
+                    <div v-if="historyList.length">
+                        <ul class="list">
+                            <li v-for="(item, idx) in historyList" @click="onClickKeyword(item.keyword)">
+                                {{item.keyword}}
+                                <span class="date">{{item.date}}</span>
+                                <button class="btn-remove" @click.stop="onClickRemoveHistory(item)"></button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div v-else> {{selectedTab}}가 없습니다. </div>
+                </div>   
             </div>
         </div>
     </div>

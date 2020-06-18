@@ -10,10 +10,13 @@ new Vue({
     tabs: ["추천 검색어", "최근 검색어"],
     selectedTab: "",
     submited: false,
-    keywordList: []
+    keywordList: [],
+    historyList: []
   },
   created() {
     this.selectedTab = this.tabs[0];
+    this.fetchKeyword();
+    this.fetchHistory();
   },
   methods: {
     onSubmit(e) {
@@ -28,13 +31,44 @@ new Vue({
     },
     onClickTab(tab) {
       this.selectedTab = tab;
-      this.keywordList = this.selectedTab === "추천검색어" ? KeywordModel.list() : HistoryModel.list()
+      this.keywordList =
+        this.selectedTab === "추천검색어"
+          ? KeywordModel.list()
+          : HistoryModel.list();
+    },
+    onClickKeyword(query) {
+      this.query = query;
+      this.search();
+    },
+    onClickRemoveHistory(item) {
+      HistoryModel.remove(item.keyword);
+      this.fetchHistory();
     },
     search() {
+      HistoryModel.add(this.query);
       SearchModel.list().then((data) => {
         this.searchResult = data;
       });
+      this.fetchHistory();
       this.submited = true;
     },
+    fetchKeyword() {
+      KeywordModel.list()
+        .then((res) => {
+          this.keywordList = res;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    fetchHistory() {
+      HistoryModel.list()
+        .then(res => {
+          this.historyList = res;
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    }
   },
 });
