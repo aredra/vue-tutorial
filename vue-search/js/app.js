@@ -2,6 +2,8 @@ import SearchModel from './models/SearchModel.js';
 import HistoryModel from "./models/HistoryModel.js";
 import KeywordModel from "./models/KeywordModel.js";
 
+import FormComponent from "./components/FormComponent.js";
+
 new Vue({
   el: "#app",
   data: {
@@ -12,6 +14,9 @@ new Vue({
     submited: false,
     keywordList: [],
     historyList: []
+  },
+  components: {
+    'search-form': FormComponent,
   },
   created() {
     this.selectedTab = this.tabs[0];
