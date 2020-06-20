@@ -18,17 +18,7 @@
             <search-form :keyword="query" @submit="onSubmit" @reset="onReset"></search-form>
 
             <div v-if="submited">
-                <div v-if="searchResult.length">
-                    <ul>
-                        <li v-for="item in searchResult">
-                            <img :src="item.image" alt="">
-                            {{item.name}}
-                        </li>
-                    </ul>
-                </div>
-                <div v-else>
-                    {{query}} 검색어로 찾을 수 없습니다.
-                </div>
+                <search-result :data="searchResult" :query="query"></search-result>
             </div>
 
             <div v-else>
@@ -76,4 +66,14 @@
         <input v-model="inputValue" @keyup="onKeyup" type="text" placeholder="검색어를 입력하세요" autofocus>
         <button v-show="inputValue.length" @click="onReset" type="reset" class="btn-reset"></button>
     </form>
+</template>
+
+<template id="search-result">
+    <div v-if="data.length">
+        <ul>
+            <li v-for="item in data">
+                <img :src="item.image" alt=""> {{item.name}} </li>
+        </ul>
+    </div>
+    <div v-else> {{query}} 검색어로 찾을 수 없습니다. </div>    
 </template>
