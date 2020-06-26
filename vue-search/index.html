@@ -14,11 +14,11 @@
         <header>
             <h2 class="container">검색</h2>
         </header>
-        <div class="container" @submit.prevent="onSubmit">
-            <search-form :keyword="query" @submit="onSubmit" @reset="onReset"></search-form>
+        <div class="container">
+            <search-form :keyword="query" @search="onSubmit" @reset="onReset"></search-form>
 
             <div v-if="submited">
-                <search-result :data="searchResult" :query="query"></search-result>
+                <search-result :data="searchResult"  :query="query"></search-result>
             </div>
 
             <div v-else>
@@ -27,31 +27,9 @@
                         {{tab}}
                     </li>
                 </ul>
-                <div v-if="selectedTab === tabs[0]">
-                    <div v-if="keywordList.length">
-                        <ul class="list">
-                            <li v-for="(item, idx) in keywordList" @click="onClickKeyword(item.keyword)">
-                                <span class="number">{{idx+1}}</span>
-                                {{item.keyword}}
-                            </li>
-                        </ul>
-                    </div>
-                    <div v-else>
-                        {{selectedTab}}가 없습니다.
-                    </div>
+                <div>
+                   <list :data="tabList" :curr-tab="selectedTab"></list>
                 </div>
-                <div v-else>
-                    <div v-if="historyList.length">
-                        <ul class="list">
-                            <li v-for="(item, idx) in historyList" @click="onClickKeyword(item.keyword)">
-                                {{item.keyword}}
-                                <span class="date">{{item.date}}</span>
-                                <button class="btn-remove" @click.stop="onClickRemoveHistory(item)"></button>
-                            </li>
-                        </ul>
-                    </div>
-                    <div v-else> {{selectedTab}}가 없습니다. </div>
-                </div>   
             </div>
         </div>
     </div>
@@ -62,8 +40,9 @@
 </html>
 
 <template id="search-form">
-    <form>
-        <input v-model="inputValue" @keyup="onKeyup" type="text" placeholder="검색어를 입력하세요" autofocus>
+    <form @submit.prevent>
+        <input v-model="inputValue" @keypress.enter.stop="onEnter" @keyup="onKeyup" type="text" placeholder="검색어를 입력하세요"
+            autofocus>
         <button v-show="inputValue.length" @click="onReset" type="reset" class="btn-reset"></button>
     </form>
 </template>
@@ -76,4 +55,18 @@
         </ul>
     </div>
     <div v-else> {{query}} 검색어로 찾을 수 없습니다. </div>    
+</template>
+
+<template id="list">
+    <div v-if="data.length">
+        <ul class="list">
+            <li v-for="(item, idx) in data" @click="onClickKeyword(item.keyword)">
+                <span v-if="getTab" class="number">{{idx+1}}</span>
+                    {{item.keyword}}
+                <span v-if="!getTab" class="date">{{item.date}}</span>
+                <button v-if="!getTab" class="btn-remove" @click.stop="onClickRemoveHistory(item)"></button>
+            </li>
+        </ul>
+    </div>
+    <div v-else> {{}}가 없습니다. </div>
 </template>

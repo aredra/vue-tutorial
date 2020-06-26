@@ -7,8 +7,8 @@ export default {
     };
   },
   methods: {
-    onSubmit() {
-      this.$emit('submit', this.inputValue.trim());
+    onEnter() {
+      this.$emit('search', this.inputValue.trim());
     },
     onReset() {
       this.inputValue = "";

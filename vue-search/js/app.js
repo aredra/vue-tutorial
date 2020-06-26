@@ -4,6 +4,7 @@ import KeywordModel from "./models/KeywordModel.js";
 
 import FormComponent from "./components/FormComponent.js";
 import ResultComponent from "./components/ResultComponent.js";
+import ListComponent from "./components/ListComponent.js";
 
 new Vue({
   el: "#app",
@@ -13,20 +14,20 @@ new Vue({
     tabs: ["추천 검색어", "최근 검색어"],
     selectedTab: "",
     submited: false,
-    keywordList: [],
-    historyList: []
+    tabList: [],
   },
   components: {
     'search-form': FormComponent,
     'search-result': ResultComponent,
+    'list': ListComponent,
   },
   created() {
     this.selectedTab = this.tabs[0];
     this.fetchKeyword();
-    this.fetchHistory();
   },
   methods: {
-    onSubmit(e) {
+    onSubmit(query = '') {
+      this.query = query;
       this.search();
     },
     onReset(e) {
@@ -39,9 +40,9 @@ new Vue({
     onClickTab(tab) {
       this.selectedTab = tab;
       this.keywordList =
-        this.selectedTab === "추천검색어"
-          ? KeywordModel.list()
-          : HistoryModel.list();
+      this.selectedTab === "추천 검색어"
+        ? this.fetchKeyword()
+        : this.fetchHistory();
     },
     onClickKeyword(query) {
       this.query = query;
@@ -53,16 +54,25 @@ new Vue({
     },
     search() {
       HistoryModel.add(this.query);
-      SearchModel.list().then((data) => {
-        this.searchResult = data;
-      });
-      this.fetchHistory();
-      this.submited = true;
+      SearchModel.list()
+        .then((data) => {
+          console.log(data);
+          debugger;
+          this.searchResult = data;
+          this.selectedTab === "추천 검색어" ? null : this.fetchHistory();
+          this.submited = true;
+        })
+        .catch(err => {
+          console.log(err);
+          debugger;
+        });
+
+
     },
     fetchKeyword() {
       KeywordModel.list()
         .then((res) => {
-          this.keywordList = res;
+          this.tabList = res;
         })
         .catch((err) => {
           console.log(err);
@@ -71,7 +81,7 @@ new Vue({
     fetchHistory() {
       HistoryModel.list()
         .then(res => {
-          this.historyList = res;
+          this.tabList = res;
         })
         .catch(err => {
           console.log(err);
