@@ -6,6 +6,11 @@ export default {
       inputValue: this.keyword,
     };
   },
+  watch: {
+    keyword(newVal, oldVal) {
+      this.inputValue = newVal !== oldVal ? newVal : oldVal;
+    }
+  },
   methods: {
     onEnter() {
       this.$emit('search', this.inputValue.trim());

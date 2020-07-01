@@ -7,5 +7,11 @@ export default {
         }
     },
     methods: {
+        onClickList(query) {
+            this.$emit("click:list", query);
+        },
+        onClickRemoveList(item) {
+            this.$emit("btn:remove", item);
+        }
     }
 }

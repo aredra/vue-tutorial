@@ -22,13 +22,10 @@
             </div>
 
             <div v-else>
-                <ul class="tabs">
-                    <li v-for="tab in tabs" :class="{active: tab === selectedTab}" @click.prevent="onClickTab(tab)">
-                        {{tab}}
-                    </li>
-                </ul>
+                <tabs :selected-tab="selectedTab" @click:tab="setTabList"></tabs>
                 <div>
-                   <list :data="tabList" :curr-tab="selectedTab"></list>
+                   <list :data="tabList" :curr-tab="selectedTab" @click:list="onClickKeyword"
+                       @btn:remove="onClickRemoveHistory"></list>
                 </div>
             </div>
         </div>
@@ -60,13 +57,20 @@
 <template id="list">
     <div v-if="data.length">
         <ul class="list">
-            <li v-for="(item, idx) in data" @click="onClickKeyword(item.keyword)">
+            <li v-for="(item, idx) in data" @click="onClickList(item.keyword)">
                 <span v-if="getTab" class="number">{{idx+1}}</span>
                     {{item.keyword}}
                 <span v-if="!getTab" class="date">{{item.date}}</span>
-                <button v-if="!getTab" class="btn-remove" @click.stop="onClickRemoveHistory(item)"></button>
+                <button v-if="!getTab" class="btn-remove" @click.stop="onClickRemoveList(item)"></button>
             </li>
         </ul>
     </div>
     <div v-else> {{}}가 없습니다. </div>
+</template>
+
+<template id="tabs">
+    <ul class="tabs">
+        <li v-for="tab in tabs" :class="{active: tab === selectedTab}" @click.stop="onClickTab(tab)">
+            {{tab}} </li>
+    </ul>
 </template>

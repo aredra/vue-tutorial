@@ -5,24 +5,25 @@ import KeywordModel from "./models/KeywordModel.js";
 import FormComponent from "./components/FormComponent.js";
 import ResultComponent from "./components/ResultComponent.js";
 import ListComponent from "./components/ListComponent.js";
+import TabComponent from "./components/TabComponent.js";
+
 
 new Vue({
   el: "#app",
   data: {
     query: "",
     searchResult: [],
-    tabs: ["추천 검색어", "최근 검색어"],
-    selectedTab: "",
     submited: false,
     tabList: [],
+    selectedTab: "추천 검색어"
   },
   components: {
     'search-form': FormComponent,
     'search-result': ResultComponent,
     'list': ListComponent,
+    'tabs': TabComponent
   },
   created() {
-    this.selectedTab = this.tabs[0];
     this.fetchKeyword();
   },
   methods: {
@@ -37,12 +38,11 @@ new Vue({
     onKeyup(e) {
       if (!this.query.length) this.onReset();
     },
-    onClickTab(tab) {
+    setTabList(tab) {
       this.selectedTab = tab;
-      this.keywordList =
-      this.selectedTab === "추천 검색어"
-        ? this.fetchKeyword()
-        : this.fetchHistory();
+      this.keywordList = tab === "추천 검색어"
+          ? this.fetchKeyword()
+          : this.fetchHistory();
     },
     onClickKeyword(query) {
       this.query = query;
